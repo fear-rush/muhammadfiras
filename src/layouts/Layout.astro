@@ -1,23 +1,162 @@
+---
+import "@fontsource/ibm-plex-mono/300.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+	keywords?: string[];
+	ogImage?: string;
+	ogType?: "website" | "article";
+	publishedTime?: string;
+	canonical?: string;
+	noindex?: boolean;
+}
+
+const {
+	title = "Personal Site",
+	description = "Personal website, blog, and projects.",
+	keywords = [],
+	ogImage,
+	ogType = "website",
+	publishedTime,
+	canonical,
+	noindex = false,
+} = Astro.props;
+const canonicalUrl = canonical ?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined);
+const seoImage = ogImage
+	? Astro.site && ogImage.startsWith("/")
+		? new URL(ogImage, Astro.site).toString()
+		: ogImage
+	: undefined;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		{keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
+		<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+		{seoImage && <meta property="og:image" content={seoImage} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{seoImage && <meta name="twitter:image" content={seoImage} />}
+		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+		<slot name="head" />
+		<title>{title}</title>
 	</head>
 	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<div class="noise" aria-hidden="true"></div>
+		<div class="glow" aria-hidden="true"></div>
 		<slot />
+		<script
+			src="/observability.js"
+			defer
+			data-endpoint={import.meta.env.PUBLIC_OBSERVABILITY_ENDPOINT ?? ""}
+		></script>
 	</body>
 </html>
 
-<style>
+<style is:global>
+	:root {
+		--primary: #c4cdd0;
+		--secondary: #8caa91;
+		--third: #c13f18;
+		--ink: #202729;
+		--ink-soft: #202729;
+		--line: rgba(32, 39, 41, 0.35);
+		--line-soft: rgba(32, 39, 41, 0.24);
+		--page-shell-width: 82rem;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
 	html,
 	body {
 		margin: 0;
-		width: 100%;
-		height: 100%;
+		min-height: 100%;
+	}
+
+	html {
+		scrollbar-gutter: stable both-edges;
+	}
+
+	body {
+		position: relative;
+		font-family: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", monospace;
+		background: var(--primary);
+		color: var(--ink);
+		line-height: 1.45;
+		letter-spacing: 0.01em;
+		overflow-y: scroll;
+		font-synthesis: none;
+	}
+
+	.noise {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		background-image: radial-gradient(rgba(255, 255, 255, 0.055) 0.7px, transparent 0.7px);
+		background-size: 5px 5px;
+		opacity: 0.09;
+		z-index: 0;
+		transform: translateZ(0);
+	}
+
+	.glow {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		background:
+			radial-gradient(85% 38% at 50% 0%, rgba(255, 255, 255, 0.3), transparent 74%),
+			radial-gradient(52% 21% at 86% 88%, rgba(140, 170, 145, 0.14), transparent 76%);
+		z-index: 0;
+		transform: translateZ(0);
+	}
+
+	a {
+		color: inherit;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+	}
+
+	a:focus-visible {
+		outline: 2px solid var(--third);
+		outline-offset: 2px;
+	}
+
+	.skip-link {
+		position: absolute;
+		left: 0.75rem;
+		top: 0.75rem;
+		padding: 0.3rem 0.55rem;
+		background: var(--primary);
+		border: 1px solid var(--line);
+		z-index: 2;
+		transform: translateY(-160%);
+	}
+
+	.skip-link:focus-visible {
+		transform: translateY(0);
+	}
+
+	.page-shell {
+		width: min(100%, var(--page-shell-width));
+		margin-inline: auto;
 	}
 </style>

@@ -1,0 +1,268 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+import fs from "node:fs";
+import path from "node:path";
+import { imageSize } from "image-size";
+
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "http://localhost:4321";
+
+function getPublicImageDimensions(url) {
+	if (!url || !url.startsWith("/")) return undefined;
+	try {
+		const absolutePath = path.join(process.cwd(), "public", url.slice(1));
+		const buffer = fs.readFileSync(absolutePath);
+		const dimensions = imageSize(buffer);
+		if (dimensions.width && dimensions.height) {
+			return { width: dimensions.width, height: dimensions.height };
+		}
+	} catch {
+		// noop
+	}
+	return undefined;
+}
+
+export async function getStaticPaths() {
+	const projects = await getCollection("projects");
+	return projects.map((project) => ({
+		params: { slug: project.id.replace(/\.md$/, "") },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const image = project.data.heroimage?.url;
+const publishedTime = project.data.date.toISOString();
+const heroDimensions = getPublicImageDimensions(image);
+const canonical = `${siteBase}/projects/${project.id.replace(/\.md$/, "")}`;
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "CreativeWork",
+	name: project.data.title,
+	description: project.data.description,
+	datePublished: publishedTime,
+	dateModified: publishedTime,
+	url: canonical,
+	creator: {
+		"@type": "Person",
+		name: "Muhammad Firas",
+	},
+	image: image ? `${siteBase}${image}` : undefined,
+	keywords: project.data.keywords,
+};
+---
+
+<Layout
+	title={`${project.data.title} / Projects / Muhammad Firas`}
+	description={project.data.description}
+	keywords={project.data.keywords}
+	ogImage={image}
+	ogType="article"
+	publishedTime={publishedTime}
+	canonical={canonical}
+>
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+	</Fragment>
+	<main id="main-content" class="shell page-shell">
+		<article class="stack">
+			<h1>{project.data.title}</h1>
+			<p class="meta">{project.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+			<p class="line">-</p>
+			{project.data.heroimage && (
+				<img
+					src={project.data.heroimage.url}
+					alt={project.data.heroimage.alt}
+					loading="lazy"
+					width={heroDimensions?.width}
+					height={heroDimensions?.height}
+				/>
+			)}
+			<div class="markdown">
+				<Content />
+			</div>
+		</article>
+	</main>
+</Layout>
+
+<style>
+	.shell {
+		position: relative;
+		z-index: 1;
+		min-height: 100vh;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 4.25rem 1.25rem 7rem;
+	}
+
+	.stack {
+		width: 100%;
+		max-width: 72ch;
+		text-align: left;
+		padding-left: 1.1rem;
+		border-left: 1px solid var(--line-soft);
+	}
+
+	h1,
+	p {
+		margin: 0;
+		font-size: 0.86rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+	}
+
+	.meta {
+		margin-top: 0.2rem;
+		color: var(--ink-soft);
+		font-size: 0.78rem;
+	}
+
+	.line {
+		margin: 0.8rem 0;
+		color: var(--ink-soft);
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 0 0 1rem;
+		border: 1px solid var(--line-soft);
+	}
+
+	:global(.markdown > * + *) {
+		margin-top: 0.9rem;
+	}
+
+	:global(.markdown h1),
+	:global(.markdown h2),
+	:global(.markdown h3),
+	:global(.markdown h4),
+	:global(.markdown h5),
+	:global(.markdown h6) {
+		font-weight: 500;
+		letter-spacing: 0.01em;
+		line-height: 1.3;
+	}
+
+	:global(.markdown h1) {
+		font-size: 1.02rem;
+	}
+
+	:global(.markdown h2) {
+		font-size: 0.97rem;
+	}
+
+	:global(.markdown h3) {
+		font-size: 0.92rem;
+	}
+
+	:global(.markdown h4),
+	:global(.markdown h5),
+	:global(.markdown h6),
+	:global(.markdown p),
+	:global(.markdown li),
+	:global(.markdown th),
+	:global(.markdown td),
+	:global(.markdown blockquote) {
+		font-size: 0.86rem;
+		font-weight: 400;
+		line-height: 1.62;
+	}
+
+	:global(.markdown a) {
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+		word-break: break-word;
+	}
+
+	:global(.markdown strong) {
+		font-weight: 500;
+	}
+
+	:global(.markdown em) {
+		font-style: italic;
+	}
+
+	:global(.markdown code) {
+		font-family: inherit;
+		font-size: 0.82rem;
+		padding: 0.05rem 0.25rem;
+		border: 1px solid var(--line-soft);
+	}
+
+	:global(.markdown pre) {
+		padding: 0.8rem;
+		overflow-x: auto;
+		border: 1px solid var(--line-soft);
+	}
+
+	:global(.markdown pre code) {
+		padding: 0;
+		border: 0;
+	}
+
+	:global(.markdown pre.astro-code span[style*="color:#6A737D"]) {
+		color: #9aa4af !important;
+	}
+
+	:global(.markdown ul),
+	:global(.markdown ol) {
+		padding-left: 1.2rem;
+	}
+
+	:global(.markdown li + li) {
+		margin-top: 0.35rem;
+	}
+
+	:global(.markdown hr) {
+		border: 0;
+		border-top: 1px solid var(--line-soft);
+		margin: 1.2rem 0;
+	}
+
+	:global(.markdown blockquote) {
+		margin-left: 0;
+		padding-left: 0.75rem;
+		border-left: 2px solid var(--line-soft);
+		color: var(--ink-soft);
+	}
+
+	:global(.markdown img) {
+		display: block;
+		width: min(100%, 34rem);
+		height: auto;
+		margin: 0.25rem auto 1rem;
+		border: 1px solid var(--line-soft);
+	}
+
+	:global(.markdown table) {
+		border-collapse: collapse;
+		width: min(100%, 42rem);
+		margin: 0 auto 1rem;
+	}
+
+	:global(.markdown th),
+	:global(.markdown td) {
+		border: 1px solid var(--line-soft);
+		padding: 0.35rem 0.45rem;
+		text-align: left;
+	}
+
+	:global(.markdown input[type="checkbox"]) {
+		margin-right: 0.4rem;
+		vertical-align: middle;
+	}
+
+	@media (max-width: 640px) {
+		.shell {
+			padding: 1.25rem 1rem 4rem 1.25rem;
+		}
+
+		.stack {
+			padding-left: 0.85rem;
+		}
+	}
+</style>

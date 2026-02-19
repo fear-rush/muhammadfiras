@@ -1,0 +1,109 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="About / Muhammad Firas" description="About page placeholder.">
+	<main id="main-content" class="shell page-shell">
+		<section class="stack">
+			<h1>About</h1>
+			<p class="line">-</p>
+			<p>
+				I’m Muhammad Firas, a developer focused on building software that is minimal, reliable, and
+				useful. I care about clarity and correctness, and I prefer a system-design-first approach before
+				implementation.
+			</p>
+			<p class="line">-</p>
+			<ul>
+				<li>Current work: scraping and data engineering</li>
+				<li>Core interests: system design, networking, and distributed computing</li>
+				<li>Platform preference: NixOS for predictability and correctness</li>
+				<li>Currently learning: Rust, Nix, NixOS</li>
+			</ul>
+			<p class="line">-</p>
+			<nav>
+				<a href="https://github.com/fear-rush" aria-label="GitHub profile">github</a>
+				<a href="https://id.linkedin.com/in/muhammadfiras" aria-label="LinkedIn profile">linkedin</a>
+			</nav>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.shell {
+		position: relative;
+		z-index: 1;
+		min-height: 100vh;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 4.25rem 1.25rem 7rem;
+	}
+
+	.stack {
+		width: 100%;
+		max-width: 56ch;
+		text-align: left;
+		padding-left: 1.1rem;
+		border-left: 1px solid var(--line-soft);
+	}
+
+	h1,
+	h2,
+	p,
+	li,
+	a {
+		margin: 0;
+		font-size: 0.86rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+	}
+
+	h2 {
+		font-weight: 500;
+	}
+
+	p {
+		line-height: 1.62;
+	}
+
+	.line {
+		margin: 1rem 0 0.85rem;
+		color: var(--ink-soft);
+	}
+
+	nav {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	ul {
+		margin: 0.6rem 0 0;
+		padding-left: 1.2rem;
+	}
+
+	li + li {
+		margin-top: 0.35rem;
+	}
+
+	a {
+		width: fit-content;
+		text-decoration: none;
+	}
+
+	a::before {
+		content: ">";
+		margin-right: 0.55rem;
+		color: var(--ink-soft);
+	}
+
+	@media (max-width: 640px) {
+		.shell {
+			padding: 1.25rem 1rem 4rem 1.25rem;
+		}
+
+		.stack {
+			padding-left: 0.85rem;
+		}
+	}
+</style>

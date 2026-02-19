@@ -1,19 +1,26 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const blogPosts = (await getCollection("blog")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Muhammad Firas / Personal Site" description="Muhammad Firas personal website.">
+<Layout title="Blog / Muhammad Firas" description="Blog posts by Muhammad Firas.">
 	<main id="main-content" class="shell page-shell">
-		<div class="stack">
-			<h1>Muhammad Firas</h1>
+		<section class="stack">
+			<h1>Blog</h1>
 			<p class="line">-</p>
-			<nav aria-label="Primary">
-				<a href="/about">about</a>
-				<a href="/blog">blog</a>
-				<a href="/projects">projects</a>
-				<a href="/setup">setup</a>
-			</nav>
-		</div>
+			<ol>
+				{
+					blogPosts.map((post, index) => (
+						<li>
+							<span>{blogPosts.length - index}.</span>
+							<a href={`/blog/${post.id.replace(/\.md$/, "")}`}>{post.data.title}</a>
+						</li>
+					))
+				}
+			</ol>
+		</section>
 	</main>
 </Layout>
 
@@ -30,7 +37,7 @@ import Layout from "../layouts/Layout.astro";
 
 	.stack {
 		width: 100%;
-		max-width: 26ch;
+		max-width: 30ch;
 		text-align: left;
 		padding-left: 1.1rem;
 		border-left: 1px solid var(--line-soft);
@@ -38,6 +45,8 @@ import Layout from "../layouts/Layout.astro";
 
 	h1,
 	p,
+	ol,
+	span,
 	a {
 		margin: 0;
 		font-size: 0.86rem;
@@ -45,42 +54,27 @@ import Layout from "../layouts/Layout.astro";
 		letter-spacing: 0.02em;
 	}
 
-	h1 {
-		margin-bottom: 0;
-		font-weight: 500;
-	}
-
-	.meta {
-		margin-top: 0.2rem;
-		color: var(--ink-soft);
-		font-size: 0.78rem;
-	}
-
 	.line {
 		margin: 1rem 0 0.85rem;
 		color: var(--ink-soft);
 	}
 
-	nav {
+	ol {
+		padding: 0;
+		list-style: none;
 		display: flex;
 		flex-direction: column;
-		gap: 0.45rem;
+		gap: 0.5rem;
 	}
 
-	a {
-		width: fit-content;
-		text-decoration: none;
-		opacity: 0.94;
+	li {
+		display: flex;
+		gap: 0.5rem;
 	}
 
-	a::before {
-		content: ">";
-		margin-right: 0.55rem;
+	span {
 		color: var(--ink-soft);
-	}
-
-	a:hover {
-		color: var(--secondary);
+		min-width: 1.2rem;
 	}
 
 	@media (max-width: 640px) {

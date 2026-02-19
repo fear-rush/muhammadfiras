@@ -1,0 +1,111 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Setup / Muhammad Firas" description="Tools, hardware, and servers used by Muhammad Firas.">
+	<main id="main-content" class="shell page-shell">
+		<section class="stack">
+			<h1>Setup</h1>
+			<p class="line">-</p>
+
+			<h2>Tools</h2>
+			<ul>
+				<li>Nix + flakes for system and environment management</li>
+				<li>Home Manager and nix-darwin for macOS config</li>
+				<li>devenv templates: Python, Node.js, Rust, Bun, PHP, Go</li>
+				<li>Neovim (AstroNvim) as the main editor</li>
+				<li>Core CLI: git, ripgrep, fd, lazygit, uv, pnpm, bun</li>
+			</ul>
+
+			<h2>Hardware</h2>
+			<ul>
+				<li><strong>Workstation:</strong> manson (macOS, aarch64-darwin)</li>
+				<li><strong>Home server:</strong> shisui (Intel i3-2310M, 8GB DDR3, 464GB HDD)</li>
+				<li><strong>VPS:</strong> itachi (OVH, 4 vCPU Haswell, 8GB RAM, 75GB disk)</li>
+			</ul>
+
+			<h2>Servers</h2>
+			<ul>
+				<li><strong>shisui:</strong> headless NixOS laptop server on local network + Tailscale</li>
+				<li><strong>itachi:</strong> remote NixOS VPS installed via nixos-anywhere</li>
+				<li>Services stack: Caddy, Nextcloud, Tailscale, SSH</li>
+				<li>Deploy flow: `nixos-rebuild switch` with remote build host for Linux targets</li>
+			</ul>
+
+			<p class="note">
+				This setup is based on: <a href="https://github.com/fear-rush/realm">github.com/fear-rush/realm</a>
+			</p>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.shell {
+		position: relative;
+		z-index: 1;
+		min-height: 100vh;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 4.25rem 1.25rem 7rem;
+	}
+
+	.stack {
+		width: 100%;
+		max-width: 70ch;
+		text-align: left;
+		padding-left: 1.1rem;
+		border-left: 1px solid var(--line-soft);
+	}
+
+	h1,
+	h2,
+	p,
+	li,
+	a,
+	strong {
+		margin: 0;
+		font-size: 0.86rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		line-height: 1.62;
+	}
+
+	h2 {
+		margin-top: 1.1rem;
+		font-weight: 500;
+	}
+
+	.line {
+		margin: 1rem 0 0.9rem;
+		color: var(--ink-soft);
+	}
+
+	ul {
+		margin: 0.6rem 0 0;
+		padding-left: 1.2rem;
+	}
+
+	li + li {
+		margin-top: 0.35rem;
+	}
+
+	strong {
+		font-weight: 500;
+	}
+
+	.note {
+		margin-top: 1.2rem;
+		color: var(--ink-soft);
+	}
+
+	@media (max-width: 640px) {
+		.shell {
+			padding: 1.25rem 1rem 4rem 1.25rem;
+		}
+
+		.stack {
+			padding-left: 0.85rem;
+		}
+	}
+</style>

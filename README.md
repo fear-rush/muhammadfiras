@@ -1,4 +1,4 @@
-# Muhammad Firas Website
+# Muhammad Firas Personal Website
 
 Minimal personal website built with Astro.
 
@@ -38,14 +38,4 @@ bun run build
 bun run preview
 ```
 
-## Production URL
 
-The sitemap and canonical URLs use the Astro `site` value.
-
-- Recommended env var: `SITE_URL=https://your-domain.com`
-- Fallback is configured to `https://muhammadfiras.com`
-
-## Repository Notes
-
-- `.vscode/` is intentionally ignored and not tracked.
-- Keep personal editor/workspace settings local.

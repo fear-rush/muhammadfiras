@@ -5,7 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
 
-const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "http://localhost:4321";
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "https://muhammadfiras.com";
 
 function getPublicImageDimensions(url) {
 	if (!url || !url.startsWith("/")) return undefined;
@@ -58,6 +58,7 @@ const jsonLd = {
 	description={project.data.description}
 	keywords={project.data.keywords}
 	ogImage={image}
+	ogImageAlt={project.data.heroimage?.alt}
 	ogType="article"
 	publishedTime={publishedTime}
 	canonical={canonical}

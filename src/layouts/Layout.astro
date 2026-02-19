@@ -8,6 +8,7 @@ interface Props {
 	description?: string;
 	keywords?: string[];
 	ogImage?: string;
+	ogImageAlt?: string;
 	ogType?: "website" | "article";
 	publishedTime?: string;
 	canonical?: string;
@@ -19,6 +20,7 @@ const {
 	description = "Personal website, blog, and projects.",
 	keywords = [],
 	ogImage,
+	ogImageAlt,
 	ogType = "website",
 	publishedTime,
 	canonical,
@@ -41,18 +43,27 @@ const seoImage = ogImage
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<meta name="author" content="Muhammad Firas" />
+		<meta name="theme-color" content="#C4CDD0" />
+		<meta name="format-detection" content="telephone=no" />
 		{keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
 		<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+		<link rel="alternate" type="application/rss+xml" title="Muhammad Firas RSS" href="/rss.xml" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="alternate" hrefLang="x-default" href={canonicalUrl ?? "/"} />
 		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content="Muhammad Firas" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
 		{seoImage && <meta property="og:image" content={seoImage} />}
+		{ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		{seoImage && <meta name="twitter:image" content={seoImage} />}
+		{ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
 		<slot name="head" />
 		<title>{title}</title>

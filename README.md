@@ -18,6 +18,12 @@ Minimal personal website built with Astro.
 - Sitemap, robots.txt, RSS, and llms.txt
 - Responsive images and improved layout stability
 
+## Content And Sitemap
+
+- Add new posts in `src/content/blog/*.md`
+- Add new projects in `src/content/projects/*.md`
+- On every build, routes and sitemap are regenerated automatically from content collections.
+
 ## Development
 
 ```bash
@@ -31,3 +37,15 @@ bun run dev
 bun run build
 bun run preview
 ```
+
+## Production URL
+
+The sitemap and canonical URLs use the Astro `site` value.
+
+- Recommended env var: `SITE_URL=https://your-domain.com`
+- Fallback is configured to `https://muhammadfiras.com`
+
+## Repository Notes
+
+- `.vscode/` is intentionally ignored and not tracked.
+- Keep personal editor/workspace settings local.

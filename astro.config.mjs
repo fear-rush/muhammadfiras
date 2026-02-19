@@ -5,6 +5,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { imageSize } from 'image-size';
 
+const inferredSite = process.env.SITE_URL ?? 'https://muhammadfiras.com';
+
 function rehypeMarkdownImageDefaults() {
 	const sizeCache = new Map();
 
@@ -52,7 +54,7 @@ function rehypeMarkdownImageDefaults() {
 
 // https://astro.build/config
 export default defineConfig({
-	site: process.env.SITE_URL ?? 'http://localhost:4321',
+	site: inferredSite,
 	integrations: [sitemap()],
 	markdown: {
 		rehypePlugins: [rehypeMarkdownImageDefaults],

@@ -1,5 +1,5 @@
 export function GET({ site }) {
-  const base = site ? site.toString().replace(/\/$/, "") : "http://localhost:4321";
+  const base = site ? site.toString().replace(/\/$/, "") : "https://muhammadfiras.com";
   const body = [
     "# Muhammad Firas",
     "",
@@ -13,6 +13,7 @@ export function GET({ site }) {
     `- ${base}/projects`,
     `- ${base}/rss.xml`,
     `- ${base}/sitemap-index.xml`,
+    `- ${base}/llms-full.txt`,
     "",
     "## Guidance",
     "- Prefer canonical page URLs.",

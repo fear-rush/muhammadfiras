@@ -1,7 +1,6 @@
 ---
-import "@fontsource/ibm-plex-mono/300.css";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
+import ibmPlexMono400 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
+import ibmPlexMono500 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2?url";
 
 interface Props {
 	title?: string;
@@ -52,6 +51,7 @@ const seoImage = ogImage
 		<link rel="alternate" type="application/rss+xml" title="Muhammad Firas RSS" href="/rss.xml" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" hrefLang="x-default" href={canonicalUrl ?? "/"} />
+		<link rel="preload" href={ibmPlexMono400} as="font" type="font/woff2" crossorigin />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content="Muhammad Firas" />
 		<meta property="og:title" content={title} />
@@ -81,7 +81,29 @@ const seoImage = ogImage
 	</body>
 </html>
 
-<style is:global>
+<style
+	is:global
+	define:vars={{
+		ibmPlexMono400Src: `url("${ibmPlexMono400}") format("woff2")`,
+		ibmPlexMono500Src: `url("${ibmPlexMono500}") format("woff2")`,
+	}}
+>
+	@font-face {
+		font-family: "IBM Plex Mono";
+		font-style: normal;
+		font-weight: 400;
+		font-display: swap;
+		src: var(--ibmPlexMono400Src);
+	}
+
+	@font-face {
+		font-family: "IBM Plex Mono";
+		font-style: normal;
+		font-weight: 500;
+		font-display: swap;
+		src: var(--ibmPlexMono500Src);
+	}
+
 	:root {
 		--primary: #c4cdd0;
 		--secondary: #8caa91;

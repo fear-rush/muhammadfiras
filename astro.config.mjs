@@ -55,6 +55,9 @@ function rehypeMarkdownImageDefaults() {
 // https://astro.build/config
 export default defineConfig({
 	site: inferredSite,
+	build: {
+		inlineStylesheets: 'always',
+	},
 	integrations: [sitemap()],
 	markdown: {
 		rehypePlugins: [rehypeMarkdownImageDefaults],

@@ -9,6 +9,7 @@ heroimage:
 categories:
   - indonesia
   - self-improvement
+  - journaling
 ---
 
 Sebagai permulaan, aku ingin mengucapkan selamat tahun baru 2025 kepada semua orang yang membaca tulisan ini. Semoga harapan dan doa yang kalian inginkan bisa tercapai di tahun ini.

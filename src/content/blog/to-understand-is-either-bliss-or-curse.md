@@ -24,4 +24,4 @@ and I've been thinking about it ever since.
 
 ---
 
-**P.S** written in 2025, published in 2025.
+**P.S** written in 2025, published in 2026.

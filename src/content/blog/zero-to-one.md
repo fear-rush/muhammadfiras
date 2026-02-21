@@ -21,3 +21,7 @@ and then fast forward to today, humans have built machines that can perform 72 p
 for comparision, if you give a human basic math problems like addition, substraction, multiplication, and division, maybe we can solve around two or three per seoncd. but a computer can solve 72 quadrillion per second. and the craziest part is computer only understands 0 and 1. it doesn't actually know 2, 3, 4 are (it understands 2, 3, 4 through binary. that's just my oversimplification).
 
 and yet, from just 0 and 1, we built all of this.
+
+---
+
+**P.S** published in 2026, written in 2025.

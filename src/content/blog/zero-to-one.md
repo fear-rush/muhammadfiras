@@ -24,4 +24,4 @@ and yet, from just 0 and 1, we built all of this.
 
 ---
 
-**P.S** published in 2026, written in 2025.
+**P.S** written in 2025, published in 2025.
